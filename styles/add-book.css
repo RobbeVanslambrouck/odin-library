@@ -1,0 +1,172 @@
+.add-book {
+    background-color: white;
+    box-shadow: 0 0 0 max(100vh, 100vw) rgba(0, 0, 0, 70%);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.4rem;
+    width: 20rem;
+    height: 32rem;
+    position: fixed;
+    left: calc((100% - 17rem)/2);
+    top: calc((100% - 23rem)/2);
+    z-index: 2;
+}
+
+.add-book form {
+    position: relative;
+    display: grid;
+    height: 100%;
+    align-content: space-between;
+}
+
+.add-book h2 {
+    position: absolute;
+    width: 20rem;
+    top: -2rem;
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: white;
+    
+}
+
+.add-book label {
+    margin-left: 0.4rem;
+    text-transform: capitalize;
+}
+
+.add-book input {
+    width: calc(100% - 1.4rem);
+    font-size: 1.6rem;
+    padding: 0.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 1rem;
+}
+
+.add-book .checkbox {
+    appearance: none;
+    background-color: #FF5842;
+    margin: 0;
+    
+    position: absolute;
+    right: -5.5rem;
+    top: 4rem;
+    font: inherit;
+    color: currentColor;
+    width: 7rem;
+    height: 2rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border-bottom: 1px solid #ccc;
+    transform: rotate(90deg);
+    text-transform: capitalize;
+    cursor: pointer;
+
+    display: grid;
+    place-content: center;
+}
+
+.add-book .checkbox::before {
+    content: "not read";
+    background-color: #FF5842;
+    width: 7rem;
+    height: 1.9rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    display: grid;
+    place-content: center;
+}
+
+.add-book .checkbox:checked::before {
+    content: "read";
+    background-color: #29FF96;
+    width: 7rem;
+    height: 1.9rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    display: grid;
+    place-content: center;
+}
+
+.add-book .buttons {
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.add-book .buttons button {
+    width: 100%;
+    height: 3rem;
+    text-transform: capitalize;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+.add-book .buttons button[type="submit"] {
+    background-color: #29FF96;
+}
+
+.add-book .buttons button[type="button"] {
+    background-color: #FF5842;
+}
+
+.add-book-hidden {
+    position: fixed;
+    right: 2rem;
+    bottom: 7rem;
+    height: 8rem;
+    width: 8rem;
+    font-size: 1.4rem;
+    color: black;
+    background-color: #29FF96;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 3px 3px 10px 2px #bbb;
+    transition: 0.2s;
+}
+
+.add-book-hidden::before {
+    position: absolute;
+    width: 5rem;
+    height: 1rem;
+    background-color: white;
+    content: "";
+    left: 1.5rem;
+    top: 3.5rem;
+    border-radius: 99rem;
+
+}
+
+.add-book-hidden::after {
+    position: absolute;
+    width: 1rem;
+    height: 5rem;
+    background-color: white;
+    content: "";
+    left: 3.5rem;
+    top: 1.5rem;
+    border-radius: 99rem;
+}
+
+.add-book-hidden * {
+    display: none;
+}
+
+@media (hover: hover) {
+    .add-book-hidden:hover {
+    box-shadow: 3px 3px 10px 2px #aaa;
+    transform: scale(1.1);
+    transition: 0.2s;
+
+    }
+
+    .add-book .buttons button:hover {
+        transform: scale(1.05);
+    }
+
+    .add-book .checkbox:hover {
+        transform: scale(1.1) rotate(90deg) translate(0, -0.1rem);
+    }
+}

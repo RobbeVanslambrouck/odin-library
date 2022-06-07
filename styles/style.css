@@ -1,1 +1,188 @@
 @import "./reset.css";
+@import "./add-book.css";
+
+:root {
+    --book-witdh: 20rem;
+    --book-height: 32rem;
+}
+
+.hidden {
+    position: fixed;
+    left: -999px;
+
+}
+
+html {
+    font-size: 62.5%;
+    font-family: roboto, arial;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: 10rem;
+    padding: 0 2rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+
+header h1 {
+    text-transform: capitalize;
+    font-size: 3rem;
+    
+}
+
+main {
+    position: relative;
+    background-color: #eeeeee;
+    min-height: calc(100vh - 10rem - 5rem);
+}
+
+.library h2{
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 2rem;
+}
+
+.books {
+    margin: 2rem;
+    display: grid;
+    gap: 3rem;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, var(--book-witdh));
+}
+
+.book {
+    position: relative;
+    height: var(--book-height);
+    width: var(--book-witdh);
+    background-color: #FFF;
+    border-radius: 0.5rem;
+    box-shadow: 3px 3px 3px 2px #ccc;
+    transition: 0.2s;
+}
+
+.book .status {
+    position: absolute;
+    text-align: center;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    transform: rotate(90deg);
+    content: "read";
+    width: 6rem;
+    height: 1.4rem;
+    right: -3.8rem;
+    top: 4rem;
+    background-color: white;
+    box-shadow: 3px -3px 3px 0px #ccc;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.book .title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 2rem;
+}
+
+.book .author::before {
+    content: 'by ';
+    text-transform: lowercase;
+    font-size: 1rem;
+    color: #444;
+}
+
+.book .author {
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+}
+
+.book .pages {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    font-size: 1.2rem;
+}
+
+.book .pages::after {
+    content: " pages";
+}
+
+.book .remove {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: transparent;
+    text-align: center;
+    font-size: 1rem;
+    text-transform: capitalize;
+    background-color: #DE3018;
+    border: none;
+    border-radius: 100% 0 0.5rem 0;
+    width: 2rem;
+    height: 2rem;
+    color: white;
+    display: grid;
+    place-items: end end;
+    padding: 0.3rem
+}
+
+footer {
+    height: 5rem;
+    text-align: center;
+    line-height: 5rem;
+    font-size: 1.4rem;
+    background-color: white;
+}
+
+footer p {
+    display: inline;
+}
+
+footer a {
+    transition: 0.2s;
+}
+
+@media (hover: hover) {
+
+    .book:hover {
+        box-shadow: 3px 3px 5px 2px #bbb;
+        transform: scale(1.05);
+        z-index: 3;
+        transition: 0.2s;
+    }
+
+    .book .status:hover {
+        box-shadow: 3px -3px 3px 2px #bbb;
+    }
+
+    .book .remove:hover {
+        width: 4rem;
+        height: 4rem;
+        z-index: 2;
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+
+    footer a:hover {
+        color: #DE3018;
+        transition: 0.2s;
+    }
+}

@@ -6,9 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/style.css" />
     <script src="script.js" defer></script>
+    <link rel="stylesheet" href="assets/css/all.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
     <title>Library</title>
   </head>
   <body>
-    <a href="#"><h1>Library</h1></a>
+    <header>
+      <a href="#"><h1>library</h1></a>
+      <a href="#" hidden>login</a>
+    </header>
+    <main>
+      <section class="add-book-hidden">
+        <h2>new book</h2>
+        <form action="#">
+          <label for="title" class="hidden">title</label>
+          <input type="text" name="title" id="title" placeholder="Title" />
+          <label for="author" class="hidden">author</label>
+          <input type="text" name="author" id="author" placeholder="Author" />
+          <label for="pages" class="hidden">number of pages</label>
+          <input
+            type="number"
+            name="pages"
+            id="pages"
+            placeholder="number of pages"
+            min="0"
+          />
+          <label for="read" class="hidden">i read it</label>
+          <input type="checkbox" name="read" id="read" class="checkbox" />
+          <div class="buttons">
+            <button type="submit">add</button>
+            <button type="button">cancel</button>
+          </div>
+        </form>
+      </section>
+      <section class="library">
+        <h2>my books</h2>
+        <div class="books">
+          <article class="book">
+            <h3 class="title">The Lord of the Rings</h3>
+            <p class="author">J. R. R. Tolkien</p>
+            <button type="button" class="remove">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+            <p class="pages">672</p>
+            <button type="button" class="status">read</button>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>Made by:</p>
+      <a href="https://github.com/RobbeVanslambrouck">
+        <i class="fa-brands fa-github"></i> Robbe Vanslambrouck
+      </a>
+    </footer>
   </body>
 </html>
