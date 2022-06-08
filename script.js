@@ -14,7 +14,7 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
-function BookCard(title, author, pages, read) {
+function BookCard(id, title, author, pages, read) {
     const divBook = document.createElement("article");
     const h3Title = document.createElement("h3");
     const pAuthor = document.createElement("p");
@@ -23,6 +23,7 @@ function BookCard(title, author, pages, read) {
     const pPages = document.createElement("p");
     const btnRead = document.createElement("button");
     divBook.className = "book";
+    divBook.id = id;
     h3Title.className = "title";
     pAuthor.className = "author";
     btnRemove.className = "remove";
@@ -33,6 +34,7 @@ function BookCard(title, author, pages, read) {
     btnRead.type = "button";
     btnRemove.append(iTrash);
     divBook.append(h3Title, pAuthor, btnRemove, pPages, btnRead)
+    btnRemove.onclick = ClickBookRemove;
 
     h3Title.textContent = title;
     pAuthor.textContent = author;
@@ -47,8 +49,8 @@ function displayLibrary(library) {
 
     divBooks.innerHTML = "";
 
-    library.forEach(book => {
-        const divBook = BookCard(book.title, book.author, book.pages, book.read)
+    library.forEach((book, id) => {
+        const divBook = BookCard(id, book.title, book.author, book.pages, book.read)
         divBooks.append(divBook);
     });
 }
@@ -90,8 +92,19 @@ sectionAddBook.addEventListener("click", clickAddBookBtn);
 sectionAddBookBtnCancel.addEventListener("click", clickAddBookCancel);
 formAddBook.onsubmit = handleSubmitBookAdd;
 
+const btnBookRemove = document.querySelectorAll("article.book .remove");
+
+function ClickBookRemove(e) {
+    e.stopPropagation;
+    const book = e.path.find(element => {
+        return element.id;
+    });
+    myLibrary.splice(book.id, 1);
+    displayLibrary(myLibrary);
+}
+
 let book1 = new Book("The Lord of the Rings", "J. R. R. Tolkien", 672, false);
-let book2 = new Book("The Lord of the Strings", "my", 69, true);
+let book2 = new Book("book number 2", "my", 42, true);
 addBookToLibrary(book1);
 addBookToLibrary(book2);
 displayLibrary(myLibrary);
