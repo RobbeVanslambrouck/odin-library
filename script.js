@@ -13,3 +13,85 @@ function Book(title, author, NumOfPages, haveRead) {
 function addBookToLibrary(book) {
     myLibrary.push(book);
 }
+
+function BookCard(title, author, pages, read) {
+    const divBook = document.createElement("article");
+    const h3Title = document.createElement("h3");
+    const pAuthor = document.createElement("p");
+    const btnRemove = document.createElement("button");
+    const iTrash = document.createElement("i");
+    const pPages = document.createElement("p");
+    const btnRead = document.createElement("button");
+    divBook.className = "book";
+    h3Title.className = "title";
+    pAuthor.className = "author";
+    btnRemove.className = "remove";
+    iTrash.className = "fa-solid fa-trash";
+    pPages.className = "pages";
+    btnRead.className = "status";
+    btnRemove.type = "button";
+    btnRead.type = "button";
+    btnRemove.append(iTrash);
+    divBook.append(h3Title, pAuthor, btnRemove, pPages, btnRead)
+
+    h3Title.textContent = title;
+    pAuthor.textContent = author;
+    pPages.textContent = pages;
+    btnRead.textContent = read ? "read" : "not read";
+
+    return divBook;
+}
+
+function displayLibrary(library) {
+    const divBooks = document.querySelector(".books");
+
+    divBooks.innerHTML = "";
+
+    library.forEach(book => {
+        const divBook = BookCard(book.title, book.author, book.pages, book.read)
+        divBooks.append(divBook);
+    });
+}
+
+const formAddBook = document.querySelector("form");
+const sectionAddBook = document.querySelector(".add-book-hidden")
+const sectionAddBookBtnCancel = document.querySelector("#cancel")
+
+function clickAddBookBtn(e) {
+    e.stopPropagation();
+    sectionAddBook.removeEventListener("click", clickAddBookBtn);
+    sectionAddBook.className = "add-book";
+}
+
+function clickAddBookCancel(e) {
+    e.stopPropagation();
+    sectionAddBook.addEventListener("click", clickAddBookBtn);
+    sectionAddBook.className = "add-book-hidden";
+}
+
+function handleSubmitBookAdd(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    sectionAddBook.addEventListener("click", clickAddBookBtn);
+    sectionAddBook.className = "add-book-hidden";
+
+    const inputTitle = document.querySelector("input#title");
+    const inputAuthor = document.querySelector("input#author");
+    const inputPages = document.querySelector("input#pages");
+    const inputRead = document.querySelector("input#read");
+
+    console.log(inputRead);
+    let newBook = new Book(inputTitle.value, inputAuthor.value, parseInt(inputPages.value), inputRead.checked)
+    addBookToLibrary(newBook);
+    displayLibrary(myLibrary);
+}
+
+sectionAddBook.addEventListener("click", clickAddBookBtn);
+sectionAddBookBtnCancel.addEventListener("click", clickAddBookCancel);
+formAddBook.onsubmit = handleSubmitBookAdd;
+
+let book1 = new Book("The Lord of the Rings", "J. R. R. Tolkien", 672, false);
+let book2 = new Book("The Lord of the Strings", "my", 69, true);
+addBookToLibrary(book1);
+addBookToLibrary(book2);
+displayLibrary(myLibrary);

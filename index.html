@@ -25,9 +25,21 @@
         <h2>new book</h2>
         <form action="#">
           <label for="title" class="hidden">title</label>
-          <input type="text" name="title" id="title" placeholder="Title" />
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Title"
+            required
+          />
           <label for="author" class="hidden">author</label>
-          <input type="text" name="author" id="author" placeholder="Author" />
+          <input
+            type="text"
+            name="author"
+            id="author"
+            placeholder="Author"
+            required
+          />
           <label for="pages" class="hidden">number of pages</label>
           <input
             type="number"
@@ -35,12 +47,13 @@
             id="pages"
             placeholder="number of pages"
             min="0"
+            required
           />
           <label for="read" class="hidden">i read it</label>
           <input type="checkbox" name="read" id="read" class="checkbox" />
           <div class="buttons">
             <button type="submit">add</button>
-            <button type="button">cancel</button>
+            <button type="button" id="cancel">cancel</button>
           </div>
         </form>
       </section>
