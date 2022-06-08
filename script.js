@@ -72,7 +72,7 @@ function clickAddBookCancel(e) {
     sectionAddBook.className = "add-book-hidden";
 }
 
-function handleSubmitBookAdd(e) {
+function handleSubmitAddBook(e) {
     e.preventDefault();
     e.stopPropagation();
     sectionAddBook.addEventListener("click", clickAddBookBtn);
@@ -87,20 +87,22 @@ function handleSubmitBookAdd(e) {
     let newBook = new Book(inputTitle.value, inputAuthor.value, parseInt(inputPages.value), inputRead.checked)
     addBookToLibrary(newBook);
     displayLibrary(myLibrary);
+    saveLibraryLocally();
 }
 
 sectionAddBook.addEventListener("click", clickAddBookBtn);
 sectionAddBookBtnCancel.addEventListener("click", clickAddBookCancel);
-formAddBook.onsubmit = handleSubmitBookAdd;
+formAddBook.onsubmit = handleSubmitAddBook;
 
 const btnBookRemove = document.querySelectorAll("article.book .remove");
 
 function clickBookRemove(e) {
     e.stopPropagation;
-    const book = e.path.find(element => {
+    const book = e.composedPath().find(element => {
         return element.id;
     });
     myLibrary.splice(book.id, 1);
+    saveLibraryLocally();
     displayLibrary(myLibrary);
 }
 
@@ -108,16 +110,22 @@ function clickReadStatus(e) {
     e.stopPropagation;
     let status = e.target.textContent === "read";
     status = !status;
-    const book = e.path.find(element => {
+    const book = e.composedPath().find(element => {
         return element.id;
     });
     myLibrary[book.id].read = status;
-    console.log(myLibrary[book.id].read);
+    saveLibraryLocally();
     e.target.textContent = status ? "read" : "not read";
 }
 
-let book1 = new Book("The Lord of the Rings", "J. R. R. Tolkien", 672, false);
-let book2 = new Book("book number 2", "my", 42, true);
-addBookToLibrary(book1);
-addBookToLibrary(book2);
+function saveLibraryLocally() {
+    localStorage.setItem("library", JSON.stringify(myLibrary));
+}
+
+function getLibraryFormLocalStorage() {
+    let j = localStorage.getItem("library")
+    return JSON.parse(j);
+}
+
+myLibrary = getLibraryFormLocalStorage();
 displayLibrary(myLibrary);
