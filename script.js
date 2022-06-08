@@ -34,7 +34,8 @@ function BookCard(id, title, author, pages, read) {
     btnRead.type = "button";
     btnRemove.append(iTrash);
     divBook.append(h3Title, pAuthor, btnRemove, pPages, btnRead)
-    btnRemove.onclick = ClickBookRemove;
+    btnRemove.onclick = clickBookRemove;
+    btnRead.onclick = clickReadStatus;
 
     h3Title.textContent = title;
     pAuthor.textContent = author;
@@ -94,13 +95,25 @@ formAddBook.onsubmit = handleSubmitBookAdd;
 
 const btnBookRemove = document.querySelectorAll("article.book .remove");
 
-function ClickBookRemove(e) {
+function clickBookRemove(e) {
     e.stopPropagation;
     const book = e.path.find(element => {
         return element.id;
     });
     myLibrary.splice(book.id, 1);
     displayLibrary(myLibrary);
+}
+
+function clickReadStatus(e) {
+    e.stopPropagation;
+    let status = e.target.textContent === "read";
+    status = !status;
+    const book = e.path.find(element => {
+        return element.id;
+    });
+    myLibrary[book.id].read = status;
+    console.log(myLibrary[book.id].read);
+    e.target.textContent = status ? "read" : "not read";
 }
 
 let book1 = new Book("The Lord of the Rings", "J. R. R. Tolkien", 672, false);
