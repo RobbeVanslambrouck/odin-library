@@ -36,35 +36,71 @@ class Library {
     }
 }
 
-function BookCard(bookId, title, author, pages, isRead) {
-    const divBook = document.createElement("article");
-    const h3Title = document.createElement("h3");
-    const pAuthor = document.createElement("p");
-    const btnRemove = document.createElement("button");
-    const iTrash = document.createElement("i");
-    const pPages = document.createElement("p");
-    const btnIsRead = document.createElement("button");
-    divBook.className = "book";
-    divBook.id = bookId;
-    h3Title.className = "title";
-    pAuthor.className = "author";
-    btnRemove.className = "remove";
-    iTrash.className = "fa-solid fa-trash";
-    pPages.className = "pages";
-    btnIsRead.className = "status";
-    btnRemove.type = "button";
-    btnIsRead.type = "button";
-    btnRemove.append(iTrash);
-    divBook.append(h3Title, pAuthor, btnRemove, pPages, btnIsRead)
-    btnRemove.onclick = clickBookRemove;
-    btnIsRead.onclick = clickReadStatus;
+class BookCard {
+    card = document.createElement("article");
+    book
 
-    h3Title.textContent = title;
-    pAuthor.textContent = author;
-    pPages.textContent = pages;
-    btnIsRead.textContent = isRead ? "read" : "not read";
+    constructor(book, bookId) {
+        const title = this.#createElement("h3", "title", book.title);
+        const author = this.#createElement("p", "author", book.author);
+        const pages = this.#createElement("p", "pages", book.pages);
+        const remove = this.#createRemoveBtn();
+        const isRead = this.#createIsReadBtn(book.isRead);
 
-    return divBook;
+        this.card.className = "book";
+        this.card.id = bookId;
+        this.card.append(title, author, remove, pages, isRead)      
+    }
+    #createElement(tagName, className, textContent) {
+        let element = document.createElement(tagName);
+        element.className = className;
+        element.textContent = textContent;
+        return element;
+    }
+
+    #createRemoveBtn() {
+        const remove = document.createElement("button");
+        const trash = document.createElement("i");
+
+        remove.className = "remove";
+        remove.type = "button";
+
+        trash.className = "fa-solid fa-trash";
+        remove.append(trash);
+        remove.onclick = this.#clickBookRemove;
+        return remove;
+    }
+    #createIsReadBtn(isRead) {
+        const element = document.createElement("button");
+        element.className = "status";
+        element.type = "button";
+        element.onclick = this.#clickReadStatus;        
+        element.textContent = isRead ? "read" : "not read";  
+        return element;
+    }
+
+    #clickBookRemove(e) {
+        e.stopPropagation;
+        // finds the first element with an id prop
+        const bookElement = e.composedPath().find(element => {
+            return element.id;
+        });
+        myLibrary.removeBookAt(bookElement.id);
+        saveLibraryLocally();
+        displayLibrary(myLibrary.books);
+    }
+    
+    #clickReadStatus(e) {
+        e.stopPropagation;
+        let status = e.target.textContent === "read";
+        status = !status;
+        const book = e.composedPath().find(element => {
+            return element.id;
+        });
+        myLibrary.books[book.id].read = status;
+        saveLibraryLocally();
+        e.target.textContent = status ? "read" : "not read";
+    }
 }
 
 function displayLibrary(library) {
@@ -73,8 +109,8 @@ function displayLibrary(library) {
     divBooks.innerHTML = "";
 
     library.forEach((book, id) => {
-        const divBook = BookCard(id, book.title, book.author, book.pages, book.read)
-        divBooks.append(divBook);
+        const bc = new BookCard(book, id);
+        divBooks.append(bc.card);
     });
 }
 
@@ -103,29 +139,6 @@ function submitAddBook(e) {
     let newBook = new Book(inputTitle.value, inputAuthor.value, parseInt(inputPages.value), inputRead.checked)
     myLibrary.addBook(newBook);
     displayLibrary(myLibrary.books);
-}
-
-function clickBookRemove(e) {
-    e.stopPropagation;
-    // finds the first element with an id prop
-    const bookElement = e.composedPath().find(element => {
-        return element.id;
-    });
-    myLibrary.removeBookAt(bookElement.id);
-    saveLibraryLocally();
-    displayLibrary(myLibrary.books);
-}
-
-function clickReadStatus(e) {
-    e.stopPropagation;
-    let status = e.target.textContent === "read";
-    status = !status;
-    const book = e.composedPath().find(element => {
-        return element.id;
-    });
-    myLibrary.books[book.id].read = status;
-    saveLibraryLocally();
-    e.target.textContent = status ? "read" : "not read";
 }
 
 function saveLibraryLocally() {
