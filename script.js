@@ -2,21 +2,38 @@ const sectionAddBook = document.querySelector("#add-book")
 const sectionAddBookBtnCancel = document.querySelector("#cancel")
 const formAddBook = document.querySelector("form");
 
-let myLibrary = [];
-
-function Book(title, author, NumOfPages, haveRead) {
-    this.title = title;
-    this.author = author
-    this.pages = NumOfPages;
-    this.isRead = haveRead;
-    this.info = function() {
+class Book {
+    constructor(title, author, NumOfPages, haveRead) {
+        this.title = title;
+        this.author = author
+        this.pages = NumOfPages;
+        this.isRead = haveRead;
+    }
+    info() {
         return this.title + " by " + this.author + ", " + this.pages + " pages, " + (this.isRead ? "already read" : "not read yet");
     }
 }
 
-function addBookToLibrary(book) {
-    myLibrary.push(book);
-    saveLibraryLocally();
+class Library {
+    books = [];
+
+    addBook(book){
+        this.books.push(book);
+        saveLibraryLocally();
+    }
+
+    removeBook(book) {
+        let index = this.books.findIndex(book);
+        this.books.splice(index, 1);
+    }
+
+    removeBookAt(index) {
+        this.books.splice(index, 1);
+    }
+
+    static fromJson(json) {
+        return Object.assign(new Library(), json);
+    }
 }
 
 function BookCard(bookId, title, author, pages, isRead) {
@@ -84,18 +101,19 @@ function submitAddBook(e) {
     const inputRead = document.querySelector("input#read");
     
     let newBook = new Book(inputTitle.value, inputAuthor.value, parseInt(inputPages.value), inputRead.checked)
-    addBookToLibrary(newBook);
-    displayLibrary(myLibrary);
+    myLibrary.addBook(newBook);
+    displayLibrary(myLibrary.books);
 }
 
 function clickBookRemove(e) {
     e.stopPropagation;
-    const book = e.composedPath().find(element => {
+    // finds the first element with an id prop
+    const bookElement = e.composedPath().find(element => {
         return element.id;
     });
-    myLibrary.splice(book.id, 1);
+    myLibrary.removeBookAt(bookElement.id);
     saveLibraryLocally();
-    displayLibrary(myLibrary);
+    displayLibrary(myLibrary.books);
 }
 
 function clickReadStatus(e) {
@@ -105,18 +123,20 @@ function clickReadStatus(e) {
     const book = e.composedPath().find(element => {
         return element.id;
     });
-    myLibrary[book.id].read = status;
+    myLibrary.books[book.id].read = status;
     saveLibraryLocally();
     e.target.textContent = status ? "read" : "not read";
 }
 
 function saveLibraryLocally() {
+    console.log(JSON.stringify(myLibrary));
     localStorage.setItem("library", JSON.stringify(myLibrary));
 }
 
 function getLibraryFormLocalStorage() {
-    let j = localStorage.getItem("library")
-    return JSON.parse(j);
+    let j = localStorage.getItem("library");
+    j = JSON.parse(j)
+    return Library.fromJson(j);
 }
 
 function app() {
@@ -124,8 +144,12 @@ function app() {
     sectionAddBookBtnCancel.addEventListener("click", clickAddBookCancel);
     formAddBook.onsubmit = submitAddBook;
     
-    myLibrary = getLibraryFormLocalStorage();
-    displayLibrary(myLibrary);
+    let storedLib = getLibraryFormLocalStorage();
+    if (storedLib != null) {
+        myLibrary = storedLib;
+    }
+    displayLibrary(myLibrary.books);
 }
 
+let myLibrary = new Library();
 app();
