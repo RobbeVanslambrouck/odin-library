@@ -142,7 +142,6 @@ function submitAddBook(e) {
 }
 
 function saveLibraryLocally() {
-    console.log(JSON.stringify(myLibrary));
     localStorage.setItem("library", JSON.stringify(myLibrary));
 }
 
