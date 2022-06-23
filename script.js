@@ -3,11 +3,11 @@ const sectionAddBookBtnCancel = document.querySelector("#cancel")
 const formAddBook = document.querySelector("form");
 
 class Book {
-    constructor(title, author, NumOfPages, haveRead) {
+    constructor(title, author, NumOfPages, isRead) {
         this.title = title;
         this.author = author
         this.pages = NumOfPages;
-        this.isRead = haveRead;
+        this.isRead = isRead;
     }
     info() {
         return this.title + " by " + this.author + ", " + this.pages + " pages, " + (this.isRead ? "already read" : "not read yet");
@@ -32,6 +32,7 @@ class Library {
     }
 
     static fromJson(json) {
+        console.log(json);
         return Object.assign(new Library(), json);
     }
 }
@@ -80,7 +81,7 @@ class BookCard {
     }
 
     #clickBookRemove(e) {
-        e.stopPropagation;
+        e.stopPropagation();
         // finds the first element with an id prop
         const bookElement = e.composedPath().find(element => {
             return element.id;
@@ -91,13 +92,13 @@ class BookCard {
     }
     
     #clickReadStatus(e) {
-        e.stopPropagation;
+        e.stopPropagation();
         let status = e.target.textContent === "read";
         status = !status;
         const book = e.composedPath().find(element => {
             return element.id;
         });
-        myLibrary.books[book.id].read = status;
+        myLibrary.books[book.id].isRead = status;
         saveLibraryLocally();
         e.target.textContent = status ? "read" : "not read";
     }
